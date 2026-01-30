@@ -1,172 +1,157 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import { 
-    PlayCircle, 
-    Wand2, 
-    Paperclip, 
-    ArrowUp, 
-    Sparkles, 
-    Bot,
-    Plus,
-    Activity,
-    ShieldAlert,
-    FileCode
+    ArrowRight, 
+    Bot, 
+    Sparkles,
+    Terminal,
+    Command,
+    Zap,
+    Github
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
 export default function PromptPage() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [inputValue, setInputValue] = useState("");
 
     const handleAnalyze = () => {
+        if (!inputValue) return;
         setIsAnalyzing(true);
-        window.location.href = "/loading";
+        setTimeout(() => {
+             window.location.href = "/loading";
+        }, 500);
     };
 
     return (
-        <div className="bg-zinc-950 min-h-screen text-white overflow-x-hidden selection:bg-zinc-800 selection:text-white">
-            <section id="prompt-page" className="font-general-sans min-h-screen flex flex-col items-center justify-center p-4 relative">
-                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+        <div className="min-h-screen bg-black text-white font-general-sans flex flex-col relative overflow-hidden selection:bg-white/20">
+            
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-900/30 via-black to-black pointer-events-none" />
+            
+            <nav className="relative z-10 p-6 flex justify-between items-center border-b border-white/5 backdrop-blur-sm">
+                <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-white text-black flex items-center justify-center font-bold tracking-tighter shadow-lg shadow-white/20">K</div>
+                    <span className="font-medium tracking-tight">KODEHAWK</span>
+                </div>
+                <div className="flex gap-6 text-sm text-zinc-400">
+                    <span className="hover:text-white cursor-pointer transition-colors">Documentation</span>
+                    <span className="hover:text-white cursor-pointer transition-colors">Enterprise</span>
+                    <span className="hover:text-white cursor-pointer transition-colors">Login</span>
+                </div>
+            </nav>
 
-                <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
+            <main className="flex-1 flex flex-col items-center justify-center relative z-10 px-4">
+                
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="mb-8 relative z-10"
+                    transition={{ duration: 0.5 }}
                 >
-                    <Badge variant="secondary" className="bg-zinc-900/80 backdrop-blur-md text-zinc-400 hover:bg-zinc-800 border border-zinc-800/50 rounded-full px-4 py-1.5 text-sm font-normal gap-2 cursor-pointer transition-all hover:border-zinc-700">
-                       <PlayCircle className="w-4 h-4 text-zinc-500" />
-                       Introducing Gemini 3, the most creative model
+                    <Badge variant="outline" className="mb-6 rounded-none border-white/10 text-zinc-400 bg-white/5 px-3 py-1 text-xs uppercase tracking-widest hover:bg-white/10 transition-colors shadow-inner">
+                        <Sparkles className="w-3 h-3 mr-2" />
+                        AI-Powered Security Analysis
                     </Badge>
                 </motion.div>
 
                 <motion.h1 
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                    className="text-6xl md:text-8xl font-medium tracking-tight text-white mb-6 text-center relative z-10"
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="text-5xl md:text-7xl font-semibold tracking-tighter text-center max-w-4xl mb-6 bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent drop-shadow-sm"
                 >
-                    KodeHawk
+                    Secure your code <br /> with intelligent precision.
                 </motion.h1>
+
                 <motion.p 
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                    className="text-zinc-400 text-lg md:text-xl mb-12 text-center relative z-10 max-w-lg mx-auto"
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="text-zinc-500 text-lg md:text-xl text-center max-w-2xl mb-12 font-light"
                 >
-                    Analyse your codebases in seconds. Detect security flaws, design patterns, and improvement opportunities instantly.{" "}
-                    <a href="#" className="text-zinc-400 border-b border-zinc-600 hover:text-white hover:border-white transition-colors pb-0.5">
-                        Watch video.
-                    </a>
+                    Instant vulnerability detection and code quality metrics. <br className="hidden md:block"/>
+                    Simply paste your repository URL to begin.
                 </motion.p>
 
                 <motion.div 
-                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-                    className="w-full max-w-3xl relative group z-10"
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="w-full max-w-2xl relative"
                 >
-                    <div className="absolute -inset-0.5 bg-gradient-to-b from-white/10 to-transparent rounded-2xl blur opacity-20 transition duration-1000 group-hover:opacity-30"></div>
+                    <div className="relative group">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-white/20 to-zinc-500/20 opacity-0 group-hover:opacity-100 transition duration-500 blur-lg" />
+                        <div className="relative flex bg-zinc-950 border border-white/10 p-1 group-focus-within:border-white/30 transition-all shadow-[0_0_40px_-10px_rgba(0,0,0,0.5)]">
+                            <div className="pl-4 flex items-center justify-center text-zinc-500">
+                                <Terminal className="w-5 h-5" />
+                            </div>
+                            <Input 
+                                className="flex-1 border-0 bg-transparent text-lg h-14 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-zinc-600 font-mono"
+                                placeholder="github.com/username/repository"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
+                            />
+                            <Button 
+                                size="lg" 
+                                className="h-14 px-8 rounded-none bg-white text-black hover:bg-zinc-200 font-medium transition-all shadow-lg hover:shadow-white/20"
+                                onClick={handleAnalyze}
+                                disabled={isAnalyzing}
+                            >
+                                {isAnalyzing ? (
+                                    <span className="animate-pulse">Analyzing...</span>
+                                ) : (
+                                    <>
+                                        Analyze <ArrowRight className="ml-2 w-4 h-4" />
+                                    </>
+                                )}
+                            </Button>
+                        </div>
+                    </div>
                     
-                    <div className="relative bg-zinc-900/80 backdrop-blur-xl border border-zinc-800/50 rounded-2xl p-4 overflow-hidden shadow-2xl shadow-black/50">
-                        <Textarea 
-                            className="w-full bg-transparent border-none text-zinc-100 placeholder:text-zinc-600 text-lg resize-none focus-visible:ring-0 min-h-[120px] p-2 font-mono"
-                            placeholder="Paste your GitHub repository link here..."
-                        />
-
-                        <div className="flex items-center justify-between mt-4">
-                            <div className="flex items-center gap-2">
-                                <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    className="bg-zinc-800/50 border-zinc-700/50 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg h-9 px-3 gap-2 text-xs font-medium backdrop-blur-sm"
-                                >
-                                    <Wand2 className="w-3.5 h-3.5" />
-                                    Prompt Builder
-                                </Button>
-
-                                <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    className="bg-zinc-800/50 border-zinc-700/50 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg h-9 px-3 gap-2 text-xs font-medium backdrop-blur-sm"
-                                >
-                                    <Sparkles className="w-3.5 h-3.5" />
-                                    Gemini 3 Pro
-                                </Button>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                                <Button size="icon" variant="ghost" className="h-9 w-9 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors">
-                                    <Bot className="w-4 h-4" />
-                                </Button>
-                                <Button size="icon" variant="ghost" className="h-9 w-9 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors">
-                                    <Paperclip className="w-4 h-4" />
-                                </Button>
-                                 <Button size="icon" variant="ghost" className="h-9 w-9 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors">
-                                    <Plus className="w-4 h-4" />
-                                </Button>
-                                
-                                <Button 
-                                    size="icon" 
-                                    onClick={handleAnalyze}
-                                    className="h-9 w-9 bg-white text-black hover:bg-zinc-200 hover:scale-105 rounded-lg ml-2 transition-all duration-300"
-                                >
-                                    <ArrowUp className="w-4 h-4" />
-                                </Button>
-                            </div>
+                    <div className="mt-4 flex justify-between text-xs text-zinc-600 font-mono">
+                        <div className="flex gap-4">
+                            <span className="flex items-center gap-1 hover:text-zinc-400 cursor-pointer"><Command className="w-3 h-3" /> P to paste</span>
+                            <span className="flex items-center gap-1 hover:text-zinc-400 cursor-pointer"><Terminal className="w-3 h-3" /> CLI available</span>
+                        </div>
+                        <div>
+                            <span>v2.4.0 (Stable)</span>
                         </div>
                     </div>
                 </motion.div>
-            </section>
+            </main>
 
-            <section className="py-24 relative z-10 border-t border-zinc-900 bg-zinc-950/50">
-                <div className="max-w-6xl mx-auto px-4">
+            <section className="relative z-10 border-t border-white/5 bg-zinc-950/50 py-16 backdrop-blur-sm shadow-[0_-20px_40px_rgba(0,0,0,0.8)]">
+                 <div className="max-w-6xl mx-auto px-4">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-16"
+                         initial={{ opacity: 0, y: 20 }}
+                         whileInView={{ opacity: 1, y: 0 }}
+                         viewport={{ once: true }}
+                         className="grid grid-cols-1 md:grid-cols-3 gap-8"
                     >
-                        <h2 className="text-3xl md:text-5xl font-semibold mb-4 text-white">How KodeHawk Works</h2>
-                        <p className="text-zinc-400 text-lg">From code to insights in three simple steps.</p>
+                        <div className="p-6 border border-white/5 hover:border-white/10 transition-all bg-zinc-900/20 hover:bg-zinc-900/30 hover:shadow-lg hover:shadow-black/50">
+                            <div className="w-10 h-10 bg-white/5 flex items-center justify-center mb-4 text-white shadow-inner">
+                                <Bot className="w-5 h-5" />
+                            </div>
+                            <h3 className="text-lg font-medium text-white mb-2">Deep Analysis</h3>
+                            <p className="text-zinc-500 leading-relaxed text-sm">Advanced static analysis powered by Gemini 3.0 to detect complex vulnerabilities.</p>
+                        </div>
+                        <div className="p-6 border border-white/5 hover:border-white/10 transition-all bg-zinc-900/20 hover:bg-zinc-900/30 hover:shadow-lg hover:shadow-black/50">
+                             <div className="w-10 h-10 bg-white/5 flex items-center justify-center mb-4 text-white shadow-inner">
+                                <Zap className="w-5 h-5" />
+                            </div>
+                            <h3 className="text-lg font-medium text-white mb-2">Real-time Metrics</h3>
+                            <p className="text-zinc-500 leading-relaxed text-sm">Get instant feedback on code quality, maintainability, and security scores.</p>
+                        </div>
+                        <div className="p-6 border border-white/5 hover:border-white/10 transition-all bg-zinc-900/20 hover:bg-zinc-900/30 hover:shadow-lg hover:shadow-black/50">
+                            <div className="w-10 h-10 bg-white/5 flex items-center justify-center mb-4 text-white shadow-inner">
+                                <Github className="w-5 h-5" />
+                            </div>
+                            <h3 className="text-lg font-medium text-white mb-2">Seamless Integration</h3>
+                            <p className="text-zinc-500 leading-relaxed text-sm">Analyzing GitHub repositories directly via URL. No configuration required.</p>
+                        </div>
                     </motion.div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                icon: <FileCode className="w-8 h-8 text-blue-400" />,
-                                title: "Input Repository",
-                                description: "Simply paste your GitHub public repository link into the prompt area."
-                            },
-                            {
-                                icon: <Activity className="w-8 h-8 text-purple-400" />,
-                                title: "AI Analysis",
-                                description: "Our advanced AI scans your codebase for patterns, security risks, and logic flaws."
-                            },
-                            {
-                                icon: <ShieldAlert className="w-8 h-8 text-green-400" />,
-                                title: "Detailed Report",
-                                description: "Receive a comprehensive dashboard highlighting critical issues and fixes."
-                            }
-                        ].map((item, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                                className="bg-zinc-900/30 border border-zinc-800 hover:border-zinc-700/80 p-6 rounded-2xl transition-all hover:bg-zinc-900/50"
-                            >
-                                <div className="bg-zinc-950 rounded-xl w-14 h-14 flex items-center justify-center mb-6 border border-zinc-800">
-                                    {item.icon}
-                                </div>
-                                <h3 className="text-xl font-medium text-white mb-2">{item.title}</h3>
-                                <p className="text-zinc-500 leading-relaxed">{item.description}</p>
-                            </motion.div>
-                        ))}
-                    </div>
                 </div>
             </section>
         </div>

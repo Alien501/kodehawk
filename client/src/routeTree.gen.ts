@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LoadingRouteImport } from './routes/loading'
+import { Route as CodehawkRouteImport } from './routes/codehawk'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoStoreRouteImport } from './routes/demo/store'
@@ -31,6 +32,11 @@ const LoginRoute = LoginRouteImport.update({
 const LoadingRoute = LoadingRouteImport.update({
   id: '/loading',
   path: '/loading',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CodehawkRoute = CodehawkRouteImport.update({
+  id: '/codehawk',
+  path: '/codehawk',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -61,6 +67,7 @@ const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/codehawk': typeof CodehawkRoute
   '/loading': typeof LoadingRoute
   '/login': typeof LoginRoute
   '/report': typeof ReportRoute
@@ -71,6 +78,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/codehawk': typeof CodehawkRoute
   '/loading': typeof LoadingRoute
   '/login': typeof LoginRoute
   '/report': typeof ReportRoute
@@ -82,6 +90,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/codehawk': typeof CodehawkRoute
   '/loading': typeof LoadingRoute
   '/login': typeof LoginRoute
   '/report': typeof ReportRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/codehawk'
     | '/loading'
     | '/login'
     | '/report'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/codehawk'
     | '/loading'
     | '/login'
     | '/report'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/codehawk'
     | '/loading'
     | '/login'
     | '/report'
@@ -125,6 +137,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CodehawkRoute: typeof CodehawkRoute
   LoadingRoute: typeof LoadingRoute
   LoginRoute: typeof LoginRoute
   ReportRoute: typeof ReportRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/loading'
       fullPath: '/loading'
       preLoaderRoute: typeof LoadingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/codehawk': {
+      id: '/codehawk'
+      path: '/codehawk'
+      fullPath: '/codehawk'
+      preLoaderRoute: typeof CodehawkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -197,6 +217,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CodehawkRoute: CodehawkRoute,
   LoadingRoute: LoadingRoute,
   LoginRoute: LoginRoute,
   ReportRoute: ReportRoute,

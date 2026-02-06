@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { 
-    ArrowRight, 
-    Bot, 
+import {
+    ArrowRight,
+    Bot,
     Sparkles,
     Terminal,
     Command,
@@ -12,24 +12,30 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { Route } from "@/routes/index";
 
 export default function PromptPage() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [inputValue, setInputValue] = useState("");
 
+    const navigate = Route.useNavigate();
+
     const handleAnalyze = () => {
         if (!inputValue) return;
         setIsAnalyzing(true);
-        setTimeout(() => {
-             window.location.href = "/loading";
-        }, 500);
+        // Navigate to the real CodeHawk agent page with the repo URL
+        navigate({
+            to: '/codehawk',
+            search: { repo: inputValue }
+        });
     };
 
     return (
         <div className="min-h-screen bg-black text-white font-general-sans flex flex-col relative overflow-hidden selection:bg-white/20">
-            
+
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-900/30 via-black to-black pointer-events-none" />
-            
+
             <nav className="relative z-10 p-6 flex justify-between items-center border-b border-white/5 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-white text-black flex items-center justify-center font-bold tracking-tighter shadow-lg shadow-white/20">K</div>
@@ -38,12 +44,13 @@ export default function PromptPage() {
                 <div className="flex gap-6 text-sm text-zinc-400">
                     <span className="hover:text-white cursor-pointer transition-colors">Documentation</span>
                     <span className="hover:text-white cursor-pointer transition-colors">Enterprise</span>
+                    <Link to="/codehawk" className="hover:text-white cursor-pointer transition-colors">CodeHawk Agent</Link>
                     <span className="hover:text-white cursor-pointer transition-colors">Login</span>
                 </div>
             </nav>
 
             <main className="flex-1 flex flex-col items-center justify-center relative z-10 px-4">
-                
+
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -55,7 +62,7 @@ export default function PromptPage() {
                     </Badge>
                 </motion.div>
 
-                <motion.h1 
+                <motion.h1
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
@@ -64,17 +71,17 @@ export default function PromptPage() {
                     Secure your code <br /> with intelligent precision.
                 </motion.h1>
 
-                <motion.p 
+                <motion.p
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="text-zinc-500 text-lg md:text-xl text-center max-w-2xl mb-12 font-light"
                 >
-                    Instant vulnerability detection and code quality metrics. <br className="hidden md:block"/>
+                    Instant vulnerability detection and code quality metrics. <br className="hidden md:block" />
                     Simply paste your repository URL to begin.
                 </motion.p>
 
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
@@ -86,15 +93,15 @@ export default function PromptPage() {
                             <div className="pl-4 flex items-center justify-center text-zinc-500">
                                 <Terminal className="w-5 h-5" />
                             </div>
-                            <Input 
+                            <Input
                                 className="flex-1 border-0 bg-transparent text-lg h-14 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-zinc-600 font-mono"
                                 placeholder="github.com/username/repository"
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
                             />
-                            <Button 
-                                size="lg" 
+                            <Button
+                                size="lg"
                                 className="h-14 px-8 rounded-none bg-white text-black hover:bg-zinc-200 font-medium transition-all shadow-lg hover:shadow-white/20"
                                 onClick={handleAnalyze}
                                 disabled={isAnalyzing}
@@ -109,7 +116,7 @@ export default function PromptPage() {
                             </Button>
                         </div>
                     </div>
-                    
+
                     <div className="mt-4 flex justify-between text-xs text-zinc-600 font-mono">
                         <div className="flex gap-4">
                             <span className="flex items-center gap-1 hover:text-zinc-400 cursor-pointer"><Command className="w-3 h-3" /> P to paste</span>
@@ -123,12 +130,12 @@ export default function PromptPage() {
             </main>
 
             <section className="relative z-10 border-t border-white/5 bg-zinc-950/50 py-16 backdrop-blur-sm shadow-[0_-20px_40px_rgba(0,0,0,0.8)]">
-                 <div className="max-w-6xl mx-auto px-4">
+                <div className="max-w-6xl mx-auto px-4">
                     <motion.div
-                         initial={{ opacity: 0, y: 20 }}
-                         whileInView={{ opacity: 1, y: 0 }}
-                         viewport={{ once: true }}
-                         className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="grid grid-cols-1 md:grid-cols-3 gap-8"
                     >
                         <div className="p-6 border border-white/5 hover:border-white/10 transition-all bg-zinc-900/20 hover:bg-zinc-900/30 hover:shadow-lg hover:shadow-black/50">
                             <div className="w-10 h-10 bg-white/5 flex items-center justify-center mb-4 text-white shadow-inner">
@@ -138,7 +145,7 @@ export default function PromptPage() {
                             <p className="text-zinc-500 leading-relaxed text-sm">Advanced static analysis powered by Gemini 3.0 to detect complex vulnerabilities.</p>
                         </div>
                         <div className="p-6 border border-white/5 hover:border-white/10 transition-all bg-zinc-900/20 hover:bg-zinc-900/30 hover:shadow-lg hover:shadow-black/50">
-                             <div className="w-10 h-10 bg-white/5 flex items-center justify-center mb-4 text-white shadow-inner">
+                            <div className="w-10 h-10 bg-white/5 flex items-center justify-center mb-4 text-white shadow-inner">
                                 <Zap className="w-5 h-5" />
                             </div>
                             <h3 className="text-lg font-medium text-white mb-2">Real-time Metrics</h3>
@@ -154,6 +161,6 @@ export default function PromptPage() {
                     </motion.div>
                 </div>
             </section>
-        </div>
+        </div >
     );
 }

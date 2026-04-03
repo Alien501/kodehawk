@@ -22,8 +22,8 @@ export default function ConnectionStatus() {
                     <Wifi className="mr-1 h-3 w-3" /> Connected
                 </Badge>
             ) : (
-                <Badge variant="destructive">
-                    <WifiOff className="mr-1 h-3 w-3" /> Disconnected
+                <Badge variant="destructive" className="bg-red-950 text-red-300">
+                    <WifiOff className="mr-1 h-3 w-3" /> Offline
                 </Badge>
             )}
             <Button

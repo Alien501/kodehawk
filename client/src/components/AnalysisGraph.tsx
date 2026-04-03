@@ -1,5 +1,4 @@
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip, Legend } from 'recharts';
-import { motion } from 'framer-motion';
 
 interface AnalysisGraphProps {
     data: {

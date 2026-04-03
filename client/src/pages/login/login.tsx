@@ -1,89 +1,180 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ChromeIcon, GithubIcon, QuoteIcon } from "lucide-react";
-import { Separator } from "@/components/ui/separator"
+import { useState } from 'react'
+import { Link } from '@tanstack/react-router'
+import { ChromeIcon, GithubIcon, Lock, Shield, TerminalSquare } from 'lucide-react'
+
+import { Route } from '@/routes/login'
+import { codeHawkStore } from '@/lib/codehawk-store'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export default function LoginPage() {
-    return(
-        <div className="h-screen w-full flex font-general-sans">
-            <div className="w-[50%] h-full bg-zinc-950 bg-grid p-12">
-                <div className="h-full w-full relative">
-                    <div className="absolute top-0 left-0">
-                        <p className="text-slate-50 font-medium text-lg uppercase">KodeHawk</p>
-                    </div>
-                    <div className="absolute left-1/2 top-1/2 -translate-1/2 w-full">
-                        <span>
-                            <QuoteIcon className="text-zinc-600" />
-                        </span>
-                        <p className="text-xl font-thin text-slate-50/90 max-w-[80%] my-4">
-                            "Only god knows, what is written here. The god also sometimes, don't know what is written"
-                        </p>
-                        <div className="flex space-x-2 items-center">
-                            <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <div className="flex flex-col">
-                                <span className="text-sm text-zinc-50 font-normal">Thiruvalluvar</span>
-                                <span className="text-xs text-zinc-500 font-normal">Thamizh Puzhavar</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 flex justify-between items-center">
-                        <p className="text-zinc-700 font-medium text-sm uppercase">Status: <Badge variant="secondary" className="-py-0.5 bg-green-200 text-green-700 font-mono">OPTIMAL</Badge></p>
-                        <span className="text-zinc-700 font-medium text-sm uppercase">&copy;KodeHawk</span>
-                    </div>
-                </div>
+  const { redirect } = Route.useSearch()
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
+  const redirectTarget = redirect && redirect.startsWith('/') ? redirect : '/codehawk'
+
+  const finishLogin = (provider: 'credentials' | 'github' | 'google') => {
+    const normalizedEmail =
+      email.trim() ||
+      (provider === 'github'
+        ? 'demo.github@kodehawk.dev'
+        : provider === 'google'
+          ? 'demo.google@kodehawk.dev'
+          : '')
+
+    if (!normalizedEmail) {
+      setError('Enter an email to continue.')
+      return
+    }
+
+    if (provider === 'credentials' && password.trim().length < 4) {
+      setError('Use at least 4 characters for the prototype password.')
+      return
+    }
+
+    codeHawkStore.login({ email: normalizedEmail, provider })
+    window.location.assign(redirectTarget)
+  }
+
+  return (
+    <div className="min-h-screen bg-black text-white font-general-sans grid lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="relative overflow-hidden border-b border-white/5 lg:border-b-0 lg:border-r">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.12),_transparent_40%),linear-gradient(135deg,_rgba(255,255,255,0.04),_transparent_55%)]" />
+        <div className="relative flex h-full flex-col justify-between p-8 lg:p-12">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center bg-white text-black font-bold tracking-tight">K</div>
+            <div>
+              <p className="text-lg font-medium tracking-tight">KODEHAWK</p>
+              <p className="text-xs text-zinc-500 uppercase tracking-[0.25em]">Security Workspace</p>
             </div>
-            <div className="w-[50%] h-full bg-black relative">
-                <div className="absolute left-1/2 top-1/2 -translate-1/2 w-[50%] font-author space-y-4">
-                    <div className="text-center space-y-2">
-                        <h1 className="text-2xl text-slate-50 font-medium">Welcome back</h1>
-                        <p className="text-sm text-zinc-500 font-normal">Enter your credentials to access the workspace.</p>
-                    </div>
-                    <div className="mx-auto space-y-2">
-                        <Label htmlFor="email" className="text-xs text-zinc-500 font-normal pl-1">Email address</Label>
-                        <Input id="email" type="email" placeholder="abcd@gmail.com" className="border-zinc-600/50 bg-zinc-800/40 text-zinc-200" />
-                    </div>
-                    <div className="mx-auto space-y-2">
-                        <Label htmlFor="password" className="text-xs text-zinc-500 font-normal pl-1">Password</Label>
-                        <Input id="password" type="password" placeholder="*********" className="border-zinc-600/50 bg-zinc-800/40 text-zinc-200" />
-                    </div>
-                    <div className="text-zinc-600 flex justify-between items-center mx-auto my-4">
-                        <div className="flex items-center space-x-1">
-                            <Checkbox id="checkbox" className="border border-zinc-600/60" />
-                            <Label htmlFor="checkbox" className="font-semibold text-xs">Remember me?</Label>
-                        </div>
-                        <a href="#" className="font-semibold text-xs hover:underline">Forgot Password</a>
-                    </div>
-                    <Button className="block w-full py-2 cursor-pointer font-medium" variant="secondary">
-                        Sign in
-                    </Button>
-                    <br />
-                    <Separator className="bg-zinc-700 relative">
-                        <span className="text-xs text-zinc-500 font-thin absolute left-1/2 top-1/2 -translate-1/2 uppercase bg-black px-2">Or continue with</span>
-                    </Separator>
-                    <br />
-                    <div className="w-full flex justify-evenly items-center">
-                        <Button className="bg-zinc-950 border border-zinc-700/50 flex items-center w-[45%] text-zinc-500 font-semibold text-xs cursor-pointer">
-                            <span><GithubIcon /></span>
-                            <span>Github</span>
-                        </Button>
-                        <Button className="bg-zinc-950 border border-zinc-700/50 flex items-center w-[45%] text-zinc-500 font-semibold text-xs cursor-pointer">
-                            <span><ChromeIcon /></span>
-                            <span>Google</span>
-                        </Button>
-                    </div>
-                    <br />
-                    <div className="w-full text-center text-xs">
-                        <p className="text-zinc-400">Don't have an account? <span className="text-zinc-200 hover:underline cursor-pointer">Request Access</span></p>
-                    </div>
-                </div>
+          </div>
+
+          <div className="max-w-xl space-y-8 py-12">
+            <Badge variant="outline" className="rounded-none border-white/10 bg-white/5 px-3 py-1 text-zinc-300">
+              Prototype session auth
+            </Badge>
+            <h1 className="text-5xl font-semibold tracking-tight leading-tight">
+              Stitch auth, live analysis, and reporting into one workspace.
+            </h1>
+            <p className="max-w-lg text-base text-zinc-400 leading-7">
+              This login is local prototype auth for now. It protects the analysis and report routes, persists your
+              session in the browser, and gives the frontend a single state model to work from.
+            </p>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="border border-white/10 bg-white/5 p-4">
+                <Shield className="mb-3 h-5 w-5 text-white" />
+                <p className="text-sm font-medium">Protected routes</p>
+                <p className="mt-2 text-xs text-zinc-500">`/codehawk` and `/report` now depend on session state.</p>
+              </div>
+              <div className="border border-white/10 bg-white/5 p-4">
+                <TerminalSquare className="mb-3 h-5 w-5 text-white" />
+                <p className="text-sm font-medium">Single workspace</p>
+                <p className="mt-2 text-xs text-zinc-500">Analysis and report use the same repo/report session.</p>
+              </div>
+              <div className="border border-white/10 bg-white/5 p-4">
+                <Lock className="mb-3 h-5 w-5 text-white" />
+                <p className="text-sm font-medium">Prototype safe</p>
+                <p className="mt-2 text-xs text-zinc-500">No backend identity yet. This is local-only auth.</p>
+              </div>
             </div>
+          </div>
+
+          <div className="flex items-center justify-between text-xs text-zinc-600">
+            <span>&copy; KodeHawk</span>
+            <Link to="/" className="hover:text-white transition-colors">
+              Back to home
+            </Link>
+          </div>
         </div>
-    )
+      </section>
+
+      <section className="flex items-center justify-center p-6 lg:p-12">
+        <div className="w-full max-w-md border border-white/10 bg-zinc-950/80 p-8 shadow-2xl backdrop-blur">
+          <div className="mb-8 space-y-2">
+            <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">Access workspace</p>
+            <h2 className="text-3xl font-semibold tracking-tight">Sign in</h2>
+            <p className="text-sm text-zinc-500">Use credentials or one-click demo providers.</p>
+          </div>
+
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-zinc-400">
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="team@college.edu"
+                className="border-white/10 bg-black/40 text-white"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-zinc-400">
+                Password
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="prototype password"
+                className="border-white/10 bg-black/40 text-white"
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    finishLogin('credentials')
+                  }
+                }}
+              />
+            </div>
+
+            {error ? <p className="text-sm text-red-400">{error}</p> : null}
+
+            <Button
+              className="w-full rounded-none bg-white text-black hover:bg-zinc-200"
+              onClick={() => finishLogin('credentials')}
+            >
+              Sign in with credentials
+            </Button>
+
+            <div className="relative py-2 text-center text-xs uppercase tracking-[0.3em] text-zinc-600">
+              <span className="bg-zinc-950 px-3">or</span>
+              <div className="absolute inset-x-0 top-1/2 -z-10 h-px -translate-y-1/2 bg-white/10" />
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Button
+                variant="outline"
+                className="rounded-none border-white/10 bg-transparent text-zinc-200 hover:bg-white/5"
+                onClick={() => finishLogin('github')}
+              >
+                <GithubIcon className="mr-2 h-4 w-4" />
+                GitHub demo
+              </Button>
+              <Button
+                variant="outline"
+                className="rounded-none border-white/10 bg-transparent text-zinc-200 hover:bg-white/5"
+                onClick={() => finishLogin('google')}
+              >
+                <ChromeIcon className="mr-2 h-4 w-4" />
+                Google demo
+              </Button>
+            </div>
+
+            <p className="text-xs text-zinc-500">
+              Redirect after login:
+              <span className="ml-2 font-mono text-zinc-300">{redirectTarget}</span>
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
 }

@@ -11,7 +11,7 @@ export default function ChatInterface() {
 
     const handleSend = () => {
         if (!message.trim()) return;
-        codeHawkStore.sendCommand('chat', { message });
+        codeHawkStore.sendChatMessage(message.trim());
         setMessage('');
     };
 

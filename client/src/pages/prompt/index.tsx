@@ -14,10 +14,12 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Route } from "@/routes/index";
+import { codeHawkStore } from "@/lib/codehawk-store";
 
 export default function PromptPage() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [inputValue, setInputValue] = useState("");
+    const user = codeHawkStore.state.auth.user;
 
     const navigate = Route.useNavigate();
 
@@ -45,7 +47,11 @@ export default function PromptPage() {
                     <span className="hover:text-white cursor-pointer transition-colors">Documentation</span>
                     <span className="hover:text-white cursor-pointer transition-colors">Enterprise</span>
                     <Link to="/codehawk" className="hover:text-white cursor-pointer transition-colors">CodeHawk Agent</Link>
-                    <span className="hover:text-white cursor-pointer transition-colors">Login</span>
+                    {user ? (
+                        <Link to="/report" className="hover:text-white cursor-pointer transition-colors">Report</Link>
+                    ) : (
+                        <Link to="/login" className="hover:text-white cursor-pointer transition-colors">Login</Link>
+                    )}
                 </div>
             </nav>
 
